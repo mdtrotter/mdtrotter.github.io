@@ -1,1 +1,0 @@
-# mdtrotter.github.io
