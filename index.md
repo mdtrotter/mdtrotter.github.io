@@ -1,3 +1,3 @@
 | ![](a11.jpg) |
 |:--|
-| <b>(Image credit: Tiziou News Service)</b> |
+| <span style="font-size:4em;">(Image credit: Tiziou News Service)</span> |
