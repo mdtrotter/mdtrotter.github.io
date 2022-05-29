@@ -17,10 +17,28 @@ First is the <b>disassembly</b> window. This window colors the current instructi
 
 ![](MicroController_Pics/MC02.png)
 
-Below the disassembly window is the <b>live memory dump</b> window. This is where the stack/heap can be viewed. The byte surrounded by a red, dotted line illustrates the byte in memory a specific register is pointing to. In the below example, the sp (Stack Pointer) register is pointing to memory address 0x4000 and the pc register is pointing to memory address 0x4438. This can also be viewed in the Register State View window.
+Below the disassembly window is the <b>live memory dump</b> window. This is where the stack/heap can be viewed. The byte surrounded by a red, dotted line illustrates the byte in memory a specific register is pointing to. In the below example, the sp (Stack Pointer) register is pointing to memory address 0x4000 and the pc register is pointing to memory address 0x4438. This can also be viewed in the register state window.
   
 ![](MicroController_Pics/MC03.png)
 
+The first two windows on the right half of the debugger are the <b>register state</b> window and the <b>Current Instruction</b> window respectively. First the register state window displays all of the registers of the CPU and their current values. Note the SP register and the PC register match what is shown in the live memory dump window. Here is a quick description of what each of these register's functions are:
 
+* PC (Program Counter) - This stores the value of the memory address of the currently execution instruction. These instructions are shown in red text in the disassembly window.
+* SP (Stack Pointer) - This stores the value of the memory address of the current top of the stack. If any data is read or saved to memory, it will be saved at the address pointed to by this register.
+* SR (Status Register) - This register stores bits that represent the status of the executing code. This is where the overflow, zero, carry bits and other information is stored for certain conditional instructions. For more detailed information view Table 3-1 in the embedded system manual linked above.
+* CG (Constant Generator) - This register allows for a larget instruction set by using constant values to represent a shorthand for certain instructions. For more information, view section 3.2.4 of the embedded system manual linked above.
+* R04 - R15 - These are general registers than can hold static values or memory addresses to refer to values in memory.
+
+![](MicroController_Pics/MC04.png)
+
+The middle window on the right side of the debugger is the <b>debugger console</b> window. This is where we can send debug level commands to interact with the execution of the instructions in the debugger. Below is an example of the help window of what commandss can be sent to the debugger and a short description of each. One command that is required to finish an exercise is the 'solve' command. The other commands are very similar to what you'll see in other debuggers.
+
+![](MicroController_Pics/MC05.png)
+
+Finally, the last window on the right side of the debugger is the <b>I/O console</b> window. This window simply prints strings or other data into a console meant for the user to read, similar to stdout in a bash shell.
+
+![](MicroController_Pics/MC06.png)
+
+Once you have gone through the tutorial you can begin to work on exercises, for which writeups are written below.
 
 ## New Orleans
