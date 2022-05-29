@@ -5,7 +5,7 @@
 *<span style="font-family: Baskerville; font-size: 20px;">"The mind is not a vessel to be filled but a fire to be kindled."</span>* -Plutarch
 
 ## Writeups
-* [MicroController](https://mdtrotter.github.io/MicroController)
+* [MicroController](/MicroController)
 
 ## Books
 
