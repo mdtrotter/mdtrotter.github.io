@@ -8,6 +8,9 @@
 * [MicroController](/MicroController)
 
 ## Books
+* Practical Malware Analysis
+* Art of Memory Forenics - TODO
+* Practical Binary Analysis -TODO
 
 ## Programs
 * Advent of Code
