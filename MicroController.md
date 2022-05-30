@@ -1,5 +1,8 @@
 # [MicroCorruption](https://microcorruption.com/)
 
+## Quick Navigation
+# [New Orleans](#new-orleans)
+
 ## Overview
 
 Microcorruption is an always online embedded systems, reverse engineering CTF. Each exercise presents an in-browser debugger. Your job is to find the password input to unlock the building that the embedded system controls.
