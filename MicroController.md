@@ -42,3 +42,8 @@ Finally, the last window on the right side of the debugger is the <b>I/O console
 Once you have gone through the tutorial you can begin to work on exercises, for which writeups are written below.
 
 ## New Orleans
+
+First, lets take a look at the main function to get a general idea of the flow of execution.
+
+![](MicroController_Pics/MC11.png)
+
