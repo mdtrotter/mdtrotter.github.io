@@ -1,8 +1,8 @@
 # [MicroCorruption](https://microcorruption.com/)
 
 ## Quick Navigation
-[New Orleans](#new-orleans)
-[Sydney](#sydney)
+* [New Orleans](#new-orleans)
+* [Sydney](#sydney)
 
 ## Overview
 
