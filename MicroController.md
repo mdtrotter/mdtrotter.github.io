@@ -57,3 +57,4 @@ We see a few interesting function calls `create_password`, `get_password`, and `
 First we see the value `#2400` moved into register `r15`. The next instruction shows the value `0x53` being moved `0x0` bits offset from the memory address pointed to by the register `r15`. Just before the function returns, lets see what values were just moved into memory.
 
 ![](MicroController_Pics/MC13-1.png)
+Note: use `track [reg]` in the debugger console to have the register highlight red in memory as shown above.
