@@ -1,7 +1,7 @@
 # [MicroCorruption](https://microcorruption.com/)
 
 ## Quick Navigation
-# [New Orleans](##New-Orleans)
+[New Orleans](#new-orleans)
 
 ## Overview
 
