@@ -56,5 +56,14 @@ We see a few interesting function calls `create_password`, `get_password`, and `
 
 First we see the value `#2400` moved into register `r15`. The next instruction shows the value `0x53` being moved `0x0` bits offset from the memory address pointed to by the register `r15`. Just before the function returns, lets see what values were just moved into memory.
 
-![](MicroController_Pics/MC13-1.png)
+![](MicroController_Pics/MC13-1.png)  
 Note: use `track [reg]` in the debugger console to have the register highlight red in memory as shown above.
+
+We can see the values `533e 7876 596d 56` stored at address `0x2400`. When converted from hex to ascii we can see the string `S>xvYmV`, which is also shown in the live memory dump.
+
+![](MicroController_Pics/MC14.png)
+Note: Taken from [CyberChef](https://gchq.github.io/CyberChef/)
+
+Next let's check out `get_password`
+
+![](
