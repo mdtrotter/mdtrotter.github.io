@@ -50,3 +50,8 @@ First, lets take a look at the main function to get a general idea of the flow o
 
 ![](MicroController_Pics/MC11.png)
 
+We see a few interesting function calls `create_password`, `get_password`, and `check_password`. Let's check what each one is doing.
+
+![](MicroController_Pics/MC12.png)
+
+First we see the value `#2400` moved into register `r15`.
