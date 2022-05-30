@@ -2,6 +2,7 @@
 
 ## Quick Navigation
 [New Orleans](#new-orleans)
+[Sydney](#sydney)
 
 ## Overview
 
@@ -54,16 +55,40 @@ We see a few interesting function calls `create_password`, `get_password`, and `
 
 ![](MicroController_Pics/MC12.png)
 
-First we see the value `#2400` moved into register `r15`. The next instruction shows the value `0x53` being moved `0x0` bits offset from the memory address pointed to by the register `r15`. Just before the function returns, lets see what values were just moved into memory.
+First we see the value `0x2400` moved into register `r15`. The next instruction shows the value `0x53` being moved `0x0` points (4 bits) offset from the memory address pointed to by the register `r15`. Just before the function returns, lets see what values were just moved into memory.
 
 ![](MicroController_Pics/MC13-1.png)  
-Note: use `track [reg]` in the debugger console to have the register highlight red in memory as shown above.
+*Note: use `track [reg]` in the debugger console to have the register highlight red in memory as shown above.*
 
 We can see the values `533e 7876 596d 56` stored at address `0x2400`. When converted from hex to ascii we can see the string `S>xvYmV`, which is also shown in the live memory dump.
 
-![](MicroController_Pics/MC14.png)
-Note: Taken from [CyberChef](https://gchq.github.io/CyberChef/)
+![](MicroController_Pics/MC14.png)  
+*Note: Taken from [CyberChef](https://gchq.github.io/CyberChef/)*
 
-Next let's check out `get_password`
+Next let's check out the `get_password` function.
 
-![](
+![](MicroController_Pics/MC15.png)
+
+This function is pretty short, but calls another function `get_sn`. For simplicity I'll just say that this function prompts the user for their input and saves this input to memory address `0x439c`. In the below example I input "password" for testing purposes.
+
+![](MicroController_Pics/MC16.png)
+
+Finally let's inspect the `check_password` function, where the comparison between our input and the generated password in memory occurs.
+
+![](MicroController_Pics/MC17.png)
+
+This function begins by moving the memory address storing our input into the register r13. The instruction at `0x44c2` is where the actual comparison occurs. The instruction `cmp.b` compares the bytes between the source and target. The source `@r13` represents a pointer to the address stored at the value in register r13. Because the value in r13 is 439c, we know this is pointing to our input string in memory. The target of the instruction, `0x2400(r14)`, takes the value in r14, currently `0x0000`, offset by 0x2400 points and set the memory address of the result as the target. So memory address `0x2400` is the target, where the generated password is stored.
+
+The instruction at `0x44c6` checks if the byte of the source and target are the same. If not, jump to `<check_password+0x16>` which is the instruction at `0x44d2`. This means that if the bytes don't match, it clears register r15 and returns to main which then starts the branch of instructions that print "incorrect password".
+
+So now that we know our input needs to match the string stored at memory address `0x2400`, let's try that as the password. To reset the debugger to how it was when we first opened the exercise type "reset" in the debugger console.
+
+![](MicroController_Pics/MC18.png)
+
+![](MicroController_Pics/MC19.png)
+
+...And it works! Now to actually solve the exercise, we need to type "solve" into the debugger console and input the password we've found.
+
+![](MicroController_Pics/MC110.png)
+
+# Sydney
