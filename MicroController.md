@@ -96,3 +96,34 @@ So now that we know our input needs to match the string stored at memory address
 Below is the main function:
 
 ![](MicroController_Pics/MC21.png)
+
+We see a few function calls, but the one of interest is `check_password`. Let's first enter our test input `password` to understand how our input is being compared to the actual password.
+
+![](MicroController_Pics/MC22.png)
+
+We can see our input is saved at address `0x439c`, stored in the sp register.
+
+![](MicroController_Pics/MC23.png)
+
+After we return from the `get_password` function, we see the value in sp moved to r15. Then the `check_password` function is called.
+
+![](MicroController_Pics/MC24.png)
+
+The commands are pretty straight forward. It is comparing static values against the values located at the memory address stored in r15, where our input is stored. If the 2 bytes compared of our input doesn't match the static bytes, the program counter will jump to address `0x44ac` which returns the value `0` in r15 and continues down the "incorrect password" branch of commands.
+
+We could convert the hex values into ASCII characters and enter them that way, however we are given the option to enter our password as hex values.
+
+![](MicroController_Pics/MC25.png)
+
+Ensure you have checked the "Check here if entering hex encoded input" checkbox, enter the hex data and...
+
+![](MicroController_Pics/MC26.png)
+
+...It seems our guess was incorrect. So let's see what's going on.
+
+![](MicroController_Pics/MC27.png)
+
+We can see that r15 is pointing to the correct address in memory... and it matches the static values being compared. However, there is an explanation for what's going on here. If we look at the raw bytes that the pc register is pointing at for the cmp instruction, we'll see the static hex values are backward from what we expect:
+
+![](MicroController_Pics/MC28.png)
+
