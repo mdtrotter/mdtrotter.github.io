@@ -3,6 +3,7 @@
 ## Quick Navigation
 * [New Orleans](#new-orleans)
 * [Sydney](#sydney)
+* [Hanoi](#hanoi)
 
 ## Overview
 
@@ -127,3 +128,10 @@ We can see that r15 is pointing to the correct address in memory... and it match
 
 ![](MicroController_Pics/MC28.png)
 
+So we see the data is read from memory from left to right, however the data is presented byte by byte from right to left. This is known as little endian data storage. So let's try entering the static hex values reading bytes from right to left.
+
+![](MicroController_Pics/MC29.png)
+
+Which gives us "Access Granted"! Next stop is Hanoi!
+
+# Hanoi
