@@ -92,3 +92,7 @@ So now that we know our input needs to match the string stored at memory address
 ![](MicroController_Pics/MC110.png)
 
 # Sydney
+
+Below is the main function:
+
+![](MicroController_Pics/MC21.png)
