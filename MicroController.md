@@ -4,6 +4,7 @@
 * [New Orleans](#new-orleans)
 * [Sydney](#sydney)
 * [Hanoi](#hanoi)
+* [Cusco](#cusco)
 
 ## Overview
 
@@ -169,8 +170,22 @@ If we look at section 4.3 in the manual for the interrupt listing and find list 
 
 Viewing the registers before the arguments are pushed to the stack we see `r14`, where the password verification flag is saved, is `0x43f8`. `r15` stores the value `0x2400`, where our password input is saved. Let's continue running through rest of the execution and see if we can identify a way to manipulate the code to allow us to unlock the door.
 
-You may have noticed that after our input is tested against the saved password, the disassembler returns to the `login` function and does a check against the value `0xf` and the value at memory address `0x2410`.
+You may have noticed that after our input is tested against the saved password, the disassembler returns to the `login` function and does a check against the value `0xf` and the value at memory address `0x2410`, which is interestingly one 16 bytes from where our input is stored. Remember that the buffer storing our input was size `0x1c`? That should allow us to overwrite the value at the address to `0xf` to force it to evaluate to true and allow us to unlock the door.
 
 ![](MicroController_Pics/MC37.png)
+
+So let's input 16 bytes of arbitrary hex data, then insert `0x0f` and see if we can unlock the door.
+
+![](MicroController_Pics/MC38.png)
+
+![](MicroController_Pics/MC39.png)
+
+Note that the value 0f is saved at memory address `0x2410`.
+
+![](MicroController_Pics/MC310.png)
+
+And we're in!
+
+Next stop is Cusco, Peru! I hope you're ready for more buffer overflow manipulation! :)
 
 # Cusco
