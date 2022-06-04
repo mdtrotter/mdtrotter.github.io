@@ -180,7 +180,7 @@ So let's input 16 bytes of arbitrary hex data, then insert `0x0f` and see if we 
 
 ![](MicroController_Pics/MC39.png)
 
-Note that the value 0f is saved at memory address `0x2410`.
+Note that the value `0x0f` is saved at memory address `0x2410`.
 
 ![](MicroController_Pics/MC310.png)
 
