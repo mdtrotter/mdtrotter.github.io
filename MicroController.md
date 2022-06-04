@@ -14,6 +14,9 @@ Microcorruption is an always online embedded systems, reverse engineering CTF. E
 The embedded system architecture, assembly language, and many other details can be found in this manual:  
 [Embedded System Manual](ti.com/lit/ug/slau049f/slau049f.pdf)
 
+A quick overview of the disassembler and fictional Lockitall LockIT Pro Manual:
+[Lockitall LockIT Pro Manual](https://microcorruption.com/public/manual.pdf)
+
 ## Tutorial
 
 We won't be doing a deep dive into the Tutorial exercise, but I'll give a highlight of how to navigate the debugger, test your input and solve an exercise. I do recommend doing the tutorial even if you're familiar with RE CTFs.
@@ -135,3 +138,39 @@ So we see the data is read from memory from left to right, however the data is p
 Which gives us "Access Granted"! Next stop is Hanoi!
 
 # Hanoi
+
+Let's take a look at the main function.
+
+![](MicroController_Pics/MC31.png)
+
+It seems most of the functionality is in the login function, so let's look there.
+
+![](MicroController_Pics/MC32.png)
+
+We see generally the same functionality as in the previous exercises, however we now see a couple of arguments passed to `get_sn`, where our input is saved into memory. We see the value `0x1c` saved into `r14`, which will be the size of the buffer where our input is saved. We also see the value `0x2400` saved into register `r15`, representing the memory address our input will be saved in memory.
+
+![](MicroController_Pics/MC33.png)
+
+After our input is saved in memory at address `0x2400`, we see this value moved into `r15` and then the function `test_password_valid` called. This seems to be where our password is validated, so let's get more familiar with this function.
+
+![](MicroController_Pics/MC34.png)
+
+There seems to be a lot going on in this function, but I mainly want to focus on the 3 arguments passed to the INT function.
+
+![](MicroController_Pics/MC35.png)
+
+If we look at the Lockitall LockIT Pro [Manual](https://microcorruption.com/public/manual.pdf), specifically section 3.2, we see that passing the value `0x7d` to the interrupt function will test our input password against the password for the lock. However, this happens at the hardware level, and so we can't simply find the plaintext password in memory anymore. We'll have to get a bit more sophisticated if we want to complete this exercise.
+
+If we look at section 4.3 in the manual for the interrupt listing and find list `INT 0x7d`, we'll see it takes two arguments. `The first argument is the password to test, the second is the location of a flag to overwrite if the password is correct.` So returning to our disassembly instructions, we see r15 passes the value for argument one and r14 passes the value for the second argument.
+
+(NOTE: When identifying which arguments are passed first in assembly, each argument is passed in reverse order. In the above case, though we see r14 pushed to the stack first before calling the `INT` function, it would be the last argument in the arguments list passed. Hence why `0x7d` is pushed last, but is actually considered the first argument.)
+
+![](MicroController_Pics/MC36.png)
+
+Viewing the registers before the arguments are pushed to the stack we see `r14`, where the password verification flag is saved, is `0x43f8`. `r15` stores the value `0x2400`, where our password input is saved. Let's continue running through rest of the execution and see if we can identify a way to manipulate the code to allow us to unlock the door.
+
+You may have noticed that after our input is tested against the saved password, the disassembler returns to the `login` function and does a check against the value `0xf` and the value at memory address `0x2410`.
+
+![](MicroController_Pics/MC37.png)
+
+# Cusco
