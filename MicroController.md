@@ -184,8 +184,6 @@ Note that the value `0x0f` is saved at memory address `0x2410`.
 
 ![](MicroController_Pics/MC310.png)
 
-And we're in!
-
-Next stop is Cusco, Peru! I hope you're ready for more buffer overflow manipulation! :)
+And we're in! Next stop is Cusco, Peru!
 
 # Cusco
