@@ -5,6 +5,7 @@
 * [Sydney](#sydney)
 * [Hanoi](#hanoi)
 * [Cusco](#cusco)
+* [Reykjavik](#reykjavik)
 
 ## Overview
 
