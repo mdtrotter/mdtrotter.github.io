@@ -25,11 +25,11 @@ We won't be doing a deep dive into the Tutorial exercise, but I'll give a highli
 
 First is the <b>disassembly</b> window. This window colors the current instruction pointed to by the PC (Program Counter register) red. You can also set breakpoints by clicking on an instruction and ensuring a blue background is produced behind the instruction.
 
-![](MicroController_Pics/MC02.png)
+![](MicroCorruption_Pics/MC02.png)
 
 Below the disassembly window is the <b>live memory dump</b> window. This is where the stack/heap can be viewed. The byte surrounded by a red, dotted line illustrates the byte in memory a specific register is pointing to. In the below example, the sp (Stack Pointer) register is pointing to memory address 0x4000 and the pc register is pointing to memory address 0x4438. This can also be viewed in the register state window.
   
-![](MicroController_Pics/MC03.png)
+![](MicroCorruption_Pics/MC03.png)
 
 The first two windows on the right half of the debugger are the <b>register state</b> window and the <b>Current Instruction</b> window respectively. First the register state window displays all of the registers of the CPU and their current values. Note the SP register and the PC register match what is shown in the live memory dump window. Here is a quick description of what each of these register's functions are:
 
@@ -39,15 +39,15 @@ The first two windows on the right half of the debugger are the <b>register stat
 * CG (Constant Generator) - This register allows for a larget instruction set by using constant values to represent a shorthand for certain instructions. For more information, view section 3.2.4 of the embedded system manual linked above.
 * R04 - R15 - These are general registers than can hold static values or memory addresses to refer to values in memory.
 
-![](MicroController_Pics/MC04.png)
+![](MicroCorruption_Pics/MC04.png)
 
 The middle window on the right side of the debugger is the <b>debugger console</b> window. This is where we can send debug level commands to interact with the execution of the instructions in the debugger. Below is an example of the help window of what commandss can be sent to the debugger and a short description of each. One command that is required to finish an exercise is the 'solve' command. The other commands are very similar to what you'll see in other debuggers.
 
-![](MicroController_Pics/MC05.png)
+![](MicroCorruption_Pics/MC05.png)
 
 Finally, the last window on the right side of the debugger is the <b>I/O console</b> window. This window simply prints strings or other data into a console meant for the user to read, similar to stdout in a bash shell.
 
-![](MicroController_Pics/MC06.png)
+![](MicroCorruption_Pics/MC06.png)
 
 Once you have gone through the tutorial you can begin to work on exercises, for which writeups are written below.
 
@@ -55,33 +55,33 @@ Once you have gone through the tutorial you can begin to work on exercises, for 
 
 First, lets take a look at the main function to get a general idea of the flow of execution.
 
-![](MicroController_Pics/MC11.png)
+![](MicroCorruption_Pics/MC11.png)
 
 We see a few interesting function calls `create_password`, `get_password`, and `check_password`. Let's check what each one is doing.
 
-![](MicroController_Pics/MC12.png)
+![](MicroCorruption_Pics/MC12.png)
 
 First we see the value `0x2400` moved into register `r15`. The next instruction shows the value `0x53` being moved `0x0` points (4 bits) offset from the memory address pointed to by the register `r15`. Just before the function returns, lets see what values were just moved into memory.
 
-![](MicroController_Pics/MC13-1.png)  
+![](MicroCorruption_Pics/MC13-1.png)  
 *Note: use `track [reg]` in the debugger console to have the register highlight red in memory as shown above.*
 
 We can see the values `533e 7876 596d 56` stored at address `0x2400`. When converted from hex to ascii we can see the string `S>xvYmV`, which is also shown in the live memory dump.
 
-![](MicroController_Pics/MC14.png)  
+![](MicroCorruption_Pics/MC14.png)  
 *Note: Taken from [CyberChef](https://gchq.github.io/CyberChef/)*
 
 Next let's check out the `get_password` function.
 
-![](MicroController_Pics/MC15.png)
+![](MicroCorruption_Pics/MC15.png)
 
 This function is pretty short, but calls another function `get_sn`. For simplicity I'll just say that this function prompts the user for their input and saves this input to memory address `0x439c`. In the below example I input "password" for testing purposes.
 
-![](MicroController_Pics/MC16.png)
+![](MicroCorruption_Pics/MC16.png)
 
 Finally let's inspect the `check_password` function, where the comparison between our input and the generated password in memory occurs.
 
-![](MicroController_Pics/MC17.png)
+![](MicroCorruption_Pics/MC17.png)
 
 This function begins by moving the memory address storing our input into the register r13. The instruction at `0x44c2` is where the actual comparison occurs. The instruction `cmp.b` compares the bytes between the source and target. The source `@r13` represents a pointer to the address stored at the value in register r13. Because the value in r13 is 439c, we know this is pointing to our input string in memory. The target of the instruction, `0x2400(r14)`, takes the value in r14, currently `0x0000`, offset by 0x2400 points and set the memory address of the result as the target. So memory address `0x2400` is the target, where the generated password is stored.
 
@@ -89,53 +89,53 @@ The instruction at `0x44c6` checks if the byte of the source and target are the 
 
 So now that we know our input needs to match the string stored at memory address `0x2400`, let's try that as the password. To reset the debugger to how it was when we first opened the exercise type "reset" in the debugger console.
 
-![](MicroController_Pics/MC18.png)
+![](MicroCorruption_Pics/MC18.png)
 
-![](MicroController_Pics/MC19.png)
+![](MicroCorruption_Pics/MC19.png)
 
 ...And it works! Now to actually solve the exercise, we need to type "solve" into the debugger console and input the password we've found.
 
-![](MicroController_Pics/MC110.png)
+![](MicroCorruption_Pics/MC110.png)
 
 # Sydney
 
 Below is the main function:
 
-![](MicroController_Pics/MC21.png)
+![](MicroCorruption_Pics/MC21.png)
 
 We see a few function calls, but the one of interest is `check_password`. Let's first enter our test input `password` to understand how our input is being compared to the actual password.
 
-![](MicroController_Pics/MC22.png)
+![](MicroCorruption_Pics/MC22.png)
 
 We can see our input is saved at address `0x439c`, stored in the sp register.
 
-![](MicroController_Pics/MC23.png)
+![](MicroCorruption_Pics/MC23.png)
 
 After we return from the `get_password` function, we see the value in sp moved to r15. Then the `check_password` function is called.
 
-![](MicroController_Pics/MC24.png)
+![](MicroCorruption_Pics/MC24.png)
 
 The commands are pretty straight forward. It is comparing static values against the values located at the memory address stored in r15, where our input is stored. If the 2 bytes compared of our input doesn't match the static bytes, the program counter will jump to address `0x44ac` which returns the value `0` in r15 and continues down the "incorrect password" branch of commands.
 
 We could convert the hex values into ASCII characters and enter them that way, however we are given the option to enter our password as hex values.
 
-![](MicroController_Pics/MC25.png)
+![](MicroCorruption_Pics/MC25.png)
 
 Ensure you have checked the "Check here if entering hex encoded input" checkbox, enter the hex data and...
 
-![](MicroController_Pics/MC26.png)
+![](MicroCorruption_Pics/MC26.png)
 
 ...It seems our guess was incorrect. So let's see what's going on.
 
-![](MicroController_Pics/MC27.png)
+![](MicroCorruption_Pics/MC27.png)
 
 We can see that r15 is pointing to the correct address in memory... and it matches the static values being compared. However, there is an explanation for what's going on here. If we look at the raw bytes that the pc register is pointing at for the cmp instruction, we'll see the static hex values are backward from what we expect:
 
-![](MicroController_Pics/MC28.png)
+![](MicroCorruption_Pics/MC28.png)
 
 So we see the data is read from memory from left to right, however the data is presented byte by byte from right to left. This is known as little endian data storage. So let's try entering the static hex values reading bytes from right to left.
 
-![](MicroController_Pics/MC29.png)
+![](MicroCorruption_Pics/MC29.png)
 
 Which gives us "Access Granted"! Next stop is Hanoi!
 
@@ -143,23 +143,23 @@ Which gives us "Access Granted"! Next stop is Hanoi!
 
 Let's take a look at the main function.
 
-![](MicroController_Pics/MC31.png)
+![](MicroCorruption_Pics/MC31.png)
 
 It seems most of the functionality is in the login function, so let's look there.
 
-![](MicroController_Pics/MC32.png)
+![](MicroCorruption_Pics/MC32.png)
 
 We see generally the same functionality as in the previous exercises, however we now see a couple of arguments passed to `get_sn`, where our input is saved into memory. We see the value `0x1c` saved into `r14`, which will be the size of the buffer where our input is saved. We also see the value `0x2400` saved into register `r15`, representing the memory address our input will be saved in memory.
 
-![](MicroController_Pics/MC33.png)
+![](MicroCorruption_Pics/MC33.png)
 
 After our input is saved in memory at address `0x2400`, we see this value moved into `r15` and then the function `test_password_valid` called. This seems to be where our password is validated, so let's get more familiar with this function.
 
-![](MicroController_Pics/MC34.png)
+![](MicroCorruption_Pics/MC34.png)
 
 There seems to be a lot going on in this function, but I mainly want to focus on the 3 arguments passed to the INT function.
 
-![](MicroController_Pics/MC35.png)
+![](MicroCorruption_Pics/MC35.png)
 
 If we look at the Lockitall LockIT Pro [Manual](https://microcorruption.com/public/manual.pdf), specifically section 3.2, we see that passing the value `0x7d` to the interrupt function will test our input password against the password for the lock. However, this happens at the hardware level, and so we can't simply find the plaintext password in memory anymore. We'll have to get a bit more sophisticated if we want to complete this exercise.
 
@@ -167,23 +167,23 @@ If we look at section 4.3 in the manual for the interrupt listing and find list 
 
 (NOTE: When identifying which arguments are passed first in assembly, each argument is passed in reverse order. In the above case, though we see r14 pushed to the stack first before calling the `INT` function, it would be the last argument in the arguments list passed. Hence why `0x7d` is pushed last, but is actually considered the first argument.)
 
-![](MicroController_Pics/MC36.png)
+![](MicroCorruption_Pics/MC36.png)
 
 Viewing the registers before the arguments are pushed to the stack we see `r14`, where the password verification flag is saved, is `0x43f8`. `r15` stores the value `0x2400`, where our password input is saved. Let's continue running through rest of the execution and see if we can identify a way to manipulate the code to allow us to unlock the door.
 
 You may have noticed that after our input is tested against the saved password, the disassembler returns to the `login` function and does a check against the value `0xf` and the value at memory address `0x2410`, which is interestingly one 16 bytes from where our input is stored. Remember that the buffer storing our input was size `0x1c`? That should allow us to overwrite the value at the address to `0xf` to force it to evaluate to true and allow us to unlock the door.
 
-![](MicroController_Pics/MC37.png)
+![](MicroCorruption_Pics/MC37.png)
 
 So let's input 16 bytes of arbitrary hex data, then insert `0x0f` and see if we can unlock the door.
 
-![](MicroController_Pics/MC38.png)
+![](MicroCorruption_Pics/MC38.png)
 
-![](MicroController_Pics/MC39.png)
+![](MicroCorruption_Pics/MC39.png)
 
 Note that the value `0x0f` is saved at memory address `0x2410`.
 
-![](MicroController_Pics/MC310.png)
+![](MicroCorruption_Pics/MC310.png)
 
 And we're in! Next stop is Cusco, Peru!
 
@@ -191,65 +191,65 @@ And we're in! Next stop is Cusco, Peru!
 
 Before we jump into the disassembler, let's take a quick look at the manual and notice a few interesting comments for this version of the LockITPro lock.
 
-![](MicroController_Pics/MC41.png)
+![](MicroCorruption_Pics/MC41.png)
 
 It seems this is a direct iteration of the LockITPro device from the previous exercise, Hanoi.
 
 Let's go ahead and take a look at the disassembly code now.
 
-![](MicroController_Pics/MC42.png)
+![](MicroCorruption_Pics/MC42.png)
 
 We see `main` just calls `login`, so let's take a look there.
 
-![](MicroController_Pics/MC43.png)
+![](MicroCorruption_Pics/MC43.png)
 
 This generally looks the same as the previous exercise (Hanoi), however we see an extra parameter sent to `getsn` in the `r14` register. The value `0x30` is stored in `r14`, which is the buffer size for our input. So now, no matter how long of a string we enter for the password, it will be cut off at 48 characters.
 
-![](MicroController_Pics/MC44.png)
+![](MicroCorruption_Pics/MC44.png)
 
 I entered our normal test input `password` and appended a bunch of characters to test this theory and it seems our input is stored between memory addresses `0x43ee` and `0x441d` with the string terminal null value (0x00) at `0x441e`. For the keen eye, you may notice these addresses cut into the addresses that store disassembly instructions.
 
-![](MicroController_Pics/MC45.png)
+![](MicroCorruption_Pics/MC45.png)
 
 ...This may come in handy later. For now let's finish the execution of the disassembly code and look for opportunities to exploit this knowledge.
 
-![](MicroController_Pics/MC46.png)
+![](MicroCorruption_Pics/MC46.png)
 
 At instruction `0x4520` we see our input tested against the password stored in the device. The comparison is done at the hardware level (more information can be read in the Hanoi exercise write-up above or in the [Lockitall LockIT Pro Manual](https://microcorruption.com/public/manual.pdf)), so we can't just find the password comparison and enter that. We'll have to be a bit more clever to complete this exercise.
 
 Notice after the password comparison is done, we are returned to the `login` function. If `r15` is zero, meaning our input did not match the password, we jump to the failure branch of execution, however there is an interesting run just before we return to the main function.
 
-![](MicroController_Pics/MC47.png)
+![](MicroCorruption_Pics/MC47.png)
 
 Interestingly the stack pointer, pointing at the beginning of our input in memory, gets incremented by `0x10`, which jumps right into the middle of our input at address `0x43fe`. And now the `pc` is pointing to the `retn` instruction at address `0x453e`.
 
-![](MicroController_Pics/MC48.png)
+![](MicroCorruption_Pics/MC48.png)
 
-![](MicroController_Pics/MC49.png)
+![](MicroCorruption_Pics/MC49.png)
 
 To understand how the `retn` instruction works, let's take one more step in the disassembly and see what address is stored in the `pc` register.
 
-![](MicroController_Pics/MC410.png)
+![](MicroCorruption_Pics/MC410.png)
 
 We see `pc` is storing the value `6161`, or `aa` in ascii. So it's taking a portion of our password input pointed to by `sp`, reading it as a memory address, and pushing that to pc. Normally this would be the address of the function that called the function we are returning from, however the designer of this code didn't properly account for us inputting more than 16 characters and overwriting the address storing the calling functions address. So let's change our password to make sure we have the `sp` pointing to the address `0x4528` when `retn` is called.
 
 (NOTE: Don't forget to account for the Little Endian memory storage method when entering your password input)
 
-![](MicroController_Pics/MC411.png)
+![](MicroCorruption_Pics/MC411.png)
 
-![](MicroController_Pics/MC412.png)
+![](MicroCorruption_Pics/MC412.png)
 
 Notice we still go down the failure branch after the `tst r15` instruction. Just before `retn` is executed...
 
-![](MicroController_Pics/MC413.png)
+![](MicroCorruption_Pics/MC413.png)
 
 ...Our `sp` register is pointing to our input `0x2845`, and when `retn` is executed...
 
-![](MicroController_Pics/MC414.png)
+![](MicroCorruption_Pics/MC414.png)
 
 ...We are now on the success branch of the disassembly!
 
-![](MicroController_Pics/MC415.png)
+![](MicroCorruption_Pics/MC415.png)
 
 Another exercise down! Next to Reykjavik, Iceland!
 
