@@ -187,3 +187,69 @@ Note that the value `0x0f` is saved at memory address `0x2410`.
 And we're in! Next stop is Cusco, Peru!
 
 # Cusco
+
+Before we jump into the disassembler, let's take a quick look at the manual and notice a few interesting comments for this version of the LockITPro lock.
+
+![](MicroController_Pics/MC41.png)
+
+It seems this is a direct iteration of the LockITPro device from the previous exercise, Hanoi.
+
+Let's go ahead and take a look at the disassembly code now.
+
+![](MicroController_Pics/MC42.png)
+
+We see `main` just calls `login`, so let's take a look there.
+
+![](MicroController_Pics/MC43.png)
+
+This generally looks the same as the previous exercise (Hanoi), however we see an extra parameter sent to `getsn` in the `r14` register. The value `0x30` is stored in `r14`, which is the buffer size for our input. So now, no matter how long of a string we enter for the password, it will be cut off at 48 characters.
+
+![](MicroController_Pics/MC44.png)
+
+I entered our normal test input `password` and appended a bunch of characters to test this theory and it seems our input is stored between memory addresses `0x43ee` and `0x441d` with the string terminal null value (0x00) at `0x441e`. For the keen eye, you may notice these addresses cut into the addresses that store disassembly instructions.
+
+![](MicroController_Pics/MC45.png)
+
+...This may come in handy later. For now let's finish the execution of the disassembly code and look for opportunities to exploit this knowledge.
+
+![](MicroController_Pics/MC46.png)
+
+At instruction `0x4520` we see our input tested against the password stored in the device. The comparison is done at the hardware level (more information can be read in the Hanoi exercise write-up above or in the [Lockitall LockIT Pro Manual](https://microcorruption.com/public/manual.pdf)), so we can't just find the password comparison and enter that. We'll have to be a bit more clever to complete this exercise.
+
+Notice after the password comparison is done, we are returned to the `login` function. If `r15` is zero, meaning our input did not match the password, we jump to the failure branch of execution, however there is an interesting run just before we return to the main function.
+
+![](MicroController_Pics/MC47.png)
+
+Interestingly the stack pointer, pointing at the beginning of our input in memory, gets incremented by `0x10`, which jumps right into the middle of our input at address `0x43fe`. And now the `pc` is pointing to the `retn` instruction at address `0x453e`.
+
+![](MicroController_Pics/MC48.png)
+
+![](MicroController_Pics/MC49.png)
+
+To understand how the `retn` instruction works, let's take one more step in the disassembly and see what address is stored in the `pc` register.
+
+![](MicroController_Pics/MC410.png)
+
+We see `pc` is storing the value `6161`, or `aa` in ascii. So it's taking a portion of our password input pointed to by `sp`, reading it as a memory address, and pushing that to pc. Normally this would be the address of the function that called the function we are returning from, however the designer of this code didn't properly account for us inputting more than 16 characters and overwriting the address storing the calling functions address. So let's change our password to make sure we have the `sp` pointing to the address `0x4528` when `retn` is called.
+
+(NOTE: Don't forget to account for the Little Endian memory storage method when entering your password input)
+
+![](MicroController_Pics/MC411.png)
+
+![](MicroController_Pics/MC412.png)
+
+Notice we still go down the failure branch after the `tst r15` instruction. Just before `retn` is executed...
+
+![](MicroController_Pics/MC413.png)
+
+...Our `sp` register is pointing to our input `0x2845`, and when `retn` is executed...
+
+![](MicroController_Pics/MC414.png)
+
+...We are now on the success branch of the disassembly!
+
+![](MicroController_Pics/MC415.png)
+
+Another exercise down! Next to Reykjavik, Iceland!
+
+# Reykjavik
