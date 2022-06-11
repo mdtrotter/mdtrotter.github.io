@@ -6,7 +6,7 @@
 -Plutarch
 
 ## Writeups
-* [MicroCorruption](/MicroController)
+* [MicroCorruption](/MicroCorruption)
 
 ## Books
 * Practical Malware Analysis
