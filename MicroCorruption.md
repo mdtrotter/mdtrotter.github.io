@@ -254,3 +254,45 @@ Notice we still go down the failure branch after the `tst r15` instruction. Just
 Another exercise down! Next to Reykjavik, Iceland!
 
 # Reykjavik
+
+Let's see what updates have been made to this version of LockITPro
+
+![](MicroCorruption_Pics/MC51.png)
+
+No more easy exercises of reading the password in memory. Let's dive in to the disassembly and see what we can figure out.
+
+![](MicroCorruption_Pics/MC52.png)
+
+We see a few values moved into `r14` and `r15`, then the function `enc` is called. `0xf8` is in `r14` and `0x2400` is in r15. These are the arguments passed to the function `enc`, so let's keep these in the back of our mind while we look at the `enc` function.
+
+![](MicroCorruption_Pics/MC53.png)
+
+Between instructions `0x4490` and `0x449a` we see loop moving values between `0x00` and `0x100` into memory starting at address `0x247c`. Let's set a breakpoint after this loop and see what values are in memory.
+
+![](MicroCorruption_Pics/MC54.png)
+
+After this loop, we see the address of the first value pushed in memory (`0x247c`) pushed into `r12`.
+
+![](MicroCorruption_Pics/MC55.png)
+
+After this we see the values generated and stored at `0x247c` get sent through a decryption algorithm and saved to the same place in memory. This loop occurs between instructions `0x44a4` and `0x44d4`. Let's run through this loop and see what gets written in memory.
+
+![](MicroCorruption_Pics/MC56.png)
+
+Hmm, doesn't look like much right now but let's keep going through the disassembly and this should start becoming more clear. Continuing the disassembly execution we see one last loop in the `enc` function between `0x44dc` and `0x450e`. This is taking the data generated in loop 2, performing some bitwise operations and stores the result at memory address `0x2400` (the argument stored in `r15`). Let's set another breakpoint past this loop and see what data is stored at memory address `0x2400`.
+
+![](MicroCorruption_Pics/MC57.png)
+
+...Well it still doesn't look like much, however let the disassembly run and return to the `main` function and notice the next instruction.
+
+![](MicroCorruption_Pics/MC58.png)
+
+It seems to think there is a function to call at memory address `0x2400`. Now this is starting to become a bit more clear. So far the assembly code has dynamically generated more assembly code through the `enc` function and is now calling that code. However, once you step into the function call, the disassembler becomes useless.
+
+![](MicroCorruption_Pics/MC59.png)
+
+The disassembler is only displaying instructions at memory address `0x10` (the hardware interface) and above address `0x4000`. However, our `pc` is at memory address `0x2400`. We can see there are valid instructions in the `current instruction` window, but it would be nice to see the flow of instructions in one place akin to the disassembler. Luckily the developers have given us just this capability. Open the [(dis)assembler](https://microcorruption.com/assembler) window and paste the data from the `Live Memory Dump` window (between the addresses `0x2400` and ~`0x2500`) into the text box, then click disassemble.
+
+![](MicroCorruption_Pics/MC510.png)
+
+And now we have a much better view of the instruction flow. 
