@@ -16,7 +16,7 @@ Microcorruption is an always online embedded systems, reverse engineering CTF. E
 The embedded system architecture, assembly language, and many other details can be found in this manual:  
 [Embedded System Manual](ti.com/lit/ug/slau049f/slau049f.pdf)
 
-A quick overview of the disassembler and fictional Lockitall LockIT Pro Manual:
+A quick overview of the disassembler and fictional Lockitall LockIT Pro Manual:  
 [Lockitall LockIT Pro Manual](https://microcorruption.com/public/manual.pdf)
 
 ## Tutorial
