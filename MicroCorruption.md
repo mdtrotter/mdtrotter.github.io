@@ -6,6 +6,7 @@
 * [Hanoi](#hanoi)
 * [Cusco](#cusco)
 * [Reykjavik](#reykjavik)
+* [Whitehorse](#whitehorse)
 
 ## Overview
 
@@ -295,4 +296,58 @@ The disassembler is only displaying instructions at memory address `0x10` (the h
 
 ![](MicroCorruption_Pics/MC510.png)
 
-And now we have a much better view of the instruction flow. 
+And now we have a much better view of the instruction flow. Let's start working through these new instructions.
+
+![](MicroCorruption_Pics/MC511.png)
+
+We see a few values set in `r4` and `r11`, then a `jmp` command. Let's step through the instructions until we execute the jmp instruction.
+
+![](MicroCorruption_Pics/MC512.png)
+
+Our `pc` has jumped to address `0x2420`, which is instruction `mov.b @r11, r15`. Find this in our disassembly and continue following the execution.
+
+![](MicroCorruption_Pics/MC513.png)
+
+We see the program check if a value is at the memory address pointed to by `r11`, memory address `0x4520`. This memory address holds the string `what's the password`? If there is a value here, we eventually call the function at memory address `0x2464`. Let's continue execution to see what this function does.
+
+![](MicroCorruption_Pics/MC514.png)
+
+We see `what's the password` printed to our console...
+
+![](MicroCorruption_Pics/MC515.png)
+
+Let's take a step back and see if we can understand what's happening here. Find the code that is stored at memory address `0x2464` and correlate that with our disassembly. We can see a familiar set of instructions.
+
+![](MicroCorruption_Pics/MC516.png)
+
+If we keep track of what values are being passed to this function in `r14`(0x00) and `r15`(0x77 or w in ascii), we can see that putchar is being called in the first call to `0x2464`.
+
+(NOTE: If this doesn't make sense, refer to the [Lockitall LockIT Pro Manual](https://microcorruption.com/public/manual.pdf). Specifically section 4.3)
+
+![](MicroCorruption_Pics/MC517.png)
+
+Once the string `what's the password?` is printed to the console, we see `0x2464` called a second time, passing the values `0x0` (meaning put) and `0xa`. This doesn't seem to do anything that I can tell. Moving to the third call of `0x2464` it is executing the `get` function by passing the value of the memory address our input is stored and the hex value `0x2`.
+
+![](MicroCorruption_Pics/MC518.png)
+
+Let's use our test input `password`, see where in memory it's saved and see how we can get the door unlocked to finish the exercise.
+
+![](MicroCorruption_Pics/MC519.png)
+
+We can see our input stored at memory address `0x43da`. But we see an intersting instruction just after we return from the function that takes our input.
+
+![](MicroCorruption_Pics/MC520.png)
+
+There is a simple `cmp` instruction that will send us down the success branch to unlock the door. We just need to make sure the address pointed to by `r4` subtracted by 24 bytes is the hex value `0xc01c`. If we read what is stored at the memory address...
+
+![](MicroCorruption_Pics/MC521.png)
+
+...Surprise, surprise. I think the solution seems pretty clear now.
+
+![](MicroCorruption_Pics/MC522.png)
+
+![](MicroCorruption_Pics/MC523.png)
+
+Next stop is Whitehorse, Canada!
+
+# Whitehorse
