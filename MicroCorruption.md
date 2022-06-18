@@ -7,6 +7,7 @@
 * [Cusco](#cusco)
 * [Reykjavik](#reykjavik)
 * [Whitehorse](#whitehorse)
+* [Montevideo](#montevideo)
 
 ## Overview
 
@@ -351,3 +352,87 @@ There is a simple `cmp` instruction that will send us down the success branch to
 Next stop is Whitehorse, Canada!
 
 # Whitehorse
+
+Time for another exciting MicroCorruption exercise. First note this a new 'category' (hardware version) from the previous exercises, so expect this to require a different approach.
+
+![](MicroCorruption_Pics/MC61.png)
+
+As always let's get an understanding of the behavior of this program. First let's look at the `main` function.
+
+![](MicroCorruption_Pics/MC62.png)
+
+It just calls the `login` function, so let's take a look there.
+
+![](MicroCorruption_Pics/MC63.png)
+
+Nothing too new here, we see strings being printed to the console, our input being saved with the `getsn` function. The only new function is `conditional_unlock_door`, let's jump to executing there to find where our input is saved in memory and figure out how the program is handling our input.
+
+![](MicroCorruption_Pics/MC64.png)
+
+We can see our input saved at memory address `0x3812`.
+
+![](MicroCorruption_Pics/MC65.png)
+
+Within the `conditional_unlock_door` function we see our input and the value `0x7e` passed to the software interrupt function `INT`. Nothing interesting happening here, so let's allow the program to return to the `login` function and see if we can find anything interesting.
+
+![](MicroCorruption_Pics/MC66.png)
+
+Since our input was incorrect, we'll jump to the failure branch of the program at address `0x451a`, however this seems pretty familiar to a previous exercise? We know the buffer for our input is `0x30` bytes:
+
+![](MicroCorruption_Pics/MC67.png)
+
+...and the instruction at `0x452a` we see the stack pointer `sp` incremented to an address we can overflow into.
+
+![](MicroCorruption_Pics/MC68.png)
+
+Let's try the same trick as the previous exercise and see if we can force the program to execute the success branch at address `0x451c`.
+
+![](MicroCorruption_Pics/MC69.png)
+
+![](MicroCorruption_Pics/MC610.png)
+
+We have the correct address to `retn`, however...
+
+![](MicroCorruption_Pics/MC611.png)
+
+...We only print the string `Access Granted`, but we don't actually unlock the door. So what is going on?
+
+Well, it seems the security updates for this version of the lock have been effective. Let's think about what we can do with what we know now. We can have the code return to an arbitrary address in the code, however nothing that exists in the code as it is can really help us. It is possible to add a bit of code within the buffer allocated by the program. We can't arbitrarily change data in the registers. Somehow we have to force the software interrupt to unlock the lock for us.
+
+The solution requires a bit of digging into the [Lockitall LockIT Pro Manual](https://microcorruption.com/public/manual.pdf)
+
+![](MicroCorruption_Pics/MC612.png)
+
+This is an interesting bit of information. We need to figure out a way to send the argument `0x7f` to the software interrupt function. This is possible using the byte commands used by the program already.
+
+![](MicroCorruption_Pics/MC613.png)
+
+So to solve this exercise, we need to enter the byte commands to push `0x7f` to the stack, call the `INT` (software interrupt) function and exploit the `retn` command to force the program to execute these commands. Using the [(dis)assembler](https://microcorruption.com/assembler) we can test that our commands are doing what we intend.
+
+![](MicroCorruption_Pics/MC614.png)
+
+Finally, let's put it into the program as our input and follow the execution after the `retn` command.
+
+![](MicroCorruption_Pics/MC615.png)
+
+![](MicroCorruption_Pics/MC616.png)
+
+We can see the `sp` register is pointing to our input to start executing our instructions at address `0x38a1`
+
+![](MicroCorruption_Pics/MC617.png)
+
+Now the `pc` register is pointing in memory to our byte commands to execute the software interrupt.
+
+![](MicroCorruption_Pics/MC618.png)
+
+![](MicroCorruption_Pics/MC619.png)
+
+...And if we continue execution...
+
+![](MicroCorruption_Pics/MC620.png)
+
+Solved!
+
+Next stop is Montevideo, Uruguay!
+
+# Montevideo
