@@ -9,9 +9,12 @@
 * [MicroCorruption](/MicroCorruption)
 
 ## Books
-* Practical Malware Analysis
-* Art of Memory Forenics - TODO
-* Practical Binary Analysis -TODO
+* Malware/Memory Analysis
+  * Practical Malware Analysis
+  * Art of Memory Forenics - TODO
+  * Practical Binary Analysis -TODO
+* Culture/History
+  * [The Story of Civilization Vol I: Our Oriental Heritage](https://archive.org/details/TheStoryOfCivilizationcomplete/Durant_Will_-_The_story_of_civilization_1/)
 
 ## Programs
 * Advent of Code
