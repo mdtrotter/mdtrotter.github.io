@@ -9,3 +9,5 @@
 - "...the squirrel that gathered nuts for a later feast, the bees that filled the comb with honey, the ants that laid up stores for a rainy day— these were among the first creators of civilization. It was they... who taught our ancestors the art of providing for tomorrow"
 
 ### Section 2
+- The path to developing economy began with the discovery of fire. Beyond this, again, man is inspired by nature to develop tools. This then led to trade between people based on the resources native to those peoples. When metals could eventually be mined and shaped, value began to be measured in these metals as opposed to trading of goods. Interestingly metal coins has been the generally accepted form of currency until relatively recently.
+- "[Man] imitated the tools and industry of the animal: he saw the monkey flinging rocks and fruit upon his enemies, or breaking open nuts and oysters with a stone; he saw the beaver building a dam, the birds making nests and bowers, the chimpanzees raising something very like a hut."
