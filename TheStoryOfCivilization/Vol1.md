@@ -5,3 +5,7 @@
 
 ## Chapter 2
 ### Section 1
+- The first step man took toward civilization was transitioning from hunting and gathering to farming and animal domestication.
+- "...the squirrel that gathered nuts for a later feast, the bees that filled the comb with honey, the ants that laid up stores for a rainy day— these were among the first creators of civilization. It was they... who taught our ancestors the art of providing for tomorrow"
+
+### Section 2
