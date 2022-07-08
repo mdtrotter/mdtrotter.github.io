@@ -18,3 +18,7 @@
 
 ## Chapter 3
 ### Section 1
+- Durant begins this chapter by demonstrating how individuals dislike government, but acquiesce to it because they also desire social interaction and the safety that a governed community provides. The natural violent interactions between clans and peoples spurned the centralization of authority.
+- "It is war that makes the chief, the king and the state, just as it is these that make war... primitive life was incarnadined with intermittent war... Property was the mother, war was the father, of the state."
+
+### Section 2
