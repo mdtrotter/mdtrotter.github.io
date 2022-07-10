@@ -34,3 +34,8 @@
 - "Gradually the man had his way: fatherhood became recognized, and property began to descend through the male; mother- right yielded to father-right; and the patriarchal family, with the oldest male at its head, became the economic, legal, political and moral unit of society. The gods, who had been mostly feminine, became great bearded patriarchs, with such harems as ambitious men dreamed of in their solitude."
 
 ## Chapter 4
+### Section 1
+- Very few animals practice true monogamy, something akin to marriage for us today. Primitive man, similarly, rarely practiced monogamy but instead practiced, what Durant views as, sexual communism. Through the transition to society that values property and ownership, men preferred monogamous relationships to control who inherits their possessions. Some societies practiced polygyny, one man having multiple wives, as women were viewed as servants of the household and allowed the man to produce more children - a commodity in early societies, but this practice was reserved for the wealthy.
+- "Marriage is older than man... But monogamy, like letters and the state, is artificial, and belongs to the history, not to the origins, of civilization... In all these forms and varieties of marriage there is hardly a trace of romantic love... but usually these attachments have nothing to do with marriage. In simple days men married for cheap labor, profitable parentage, and regular meals."
+
+### Section 2
