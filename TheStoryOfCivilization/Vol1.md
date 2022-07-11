@@ -39,3 +39,7 @@
 - "Marriage is older than man... But monogamy, like letters and the state, is artificial, and belongs to the history, not to the origins, of civilization... In all these forms and varieties of marriage there is hardly a trace of romantic love... but usually these attachments have nothing to do with marriage. In simple days men married for cheap labor, profitable parentage, and regular meals."
 
 ### Section 2
+- This section demonstrates how even the practice of sex and the view of virginity was flipped on its head when man began to focus on ownership and property. Virginity was seen as undesirable in a potential mate in natural societies, but was preferable in more advanced as it assured no contention of ownership between their children and those the woman may have had before.
+- "The institutions, conventions, customs and laws that make up the complex structure of a society are the work of a hundred centuries and a billion minds; and one mind must not expect to comprehend them in one lifetime, much less in twenty years. We are warranted in concluding that morals are relative, and indispensable."
+
+### Section 3
