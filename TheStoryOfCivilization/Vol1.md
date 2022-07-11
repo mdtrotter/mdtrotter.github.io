@@ -43,3 +43,4 @@
 - "The institutions, conventions, customs and laws that make up the complex structure of a society are the work of a hundred centuries and a billion minds; and one mind must not expect to comprehend them in one lifetime, much less in twenty years. We are warranted in concluding that morals are relative, and indispensable."
 
 ### Section 3
+- "In general, dishonesty rises with civilization, because under civilization the stakes of diplomacy are larger, there are more things to be stolen, and education makes men clever... Moral progress in history lies not so much in the improvement of the moral code as in the enlargement of the area within which it is applied... Morals, then, are soon endowed with religious sanctions, because mys- tery and supernaturalism lend a weight which can never attach to things empirically known and genetically understood; men are more easily ruled by imagination than by science."
